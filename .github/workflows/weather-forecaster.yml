@@ -1,0 +1,42 @@
+name: Weather Forecast CRON
+
+# Runs every morning at 07:30
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 07 * * *"
+
+jobs:
+  forecast_weather:
+    runs-on: ubuntu-latest
+    env:
+      WEATHER_FORECAST_API_URL: ${{ secrets.WEATHER_FORECAST_API_URL }}
+      USER_AGENT: ${{ secrets.USER_AGENT }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Call API and maybe save JSON
+        run: python forecast_weather.py
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "Weather Forecast Bot"
+          git config --global user.email "<>"
+
+      - name: Commit and push changes to main branch
+        run: |
+          git add .
+          git commit -m "Today's weather forecast"
+          git push origin main
