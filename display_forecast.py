@@ -1,4 +1,6 @@
 import json
+import os
+
 import matplotlib.pyplot as plt
 from datetime import datetime
 
@@ -71,9 +73,38 @@ def plot_weather_data(json_response):
     plt.show()
 
 
+def choose_file(files):
+    print("Available forecast files:")
+    for i, file in enumerate(files):
+        print(f"{i + 1}. {file}")
+
+    while True:
+        choice = input("Choose a file number: ")
+        try:
+            choice = int(choice)
+            if 1 <= choice <= len(files):
+                return files[choice - 1]
+            else:
+                print("Invalid choice. Please enter a valid file number.")
+        except ValueError:
+            print("Invalid choice. Please enter a valid file number.")
+
+
 def main():
-    # Read the JSON response from a file
-    with open('forecasts/2023-06-16.json', 'r') as file:
+    # List forecast files in the "forecasts" folder
+    folder_path = "forecasts"
+    files = os.listdir(folder_path)
+
+    if len(files) == 0:
+        print("No forecast files found.")
+        return
+
+    # Prompt the user to choose a file
+    chosen_file = choose_file(files)
+    file_path = os.path.join(folder_path, chosen_file)
+
+    # Read the JSON response from the chosen file
+    with open(file_path, 'r') as file:
         json_response = file.read()
 
     # Plot the weather data
