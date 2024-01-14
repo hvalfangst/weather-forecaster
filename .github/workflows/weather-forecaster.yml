@@ -1,6 +1,6 @@
 name: Weather Forecast CRON
 
-# Runs every morning at 07:30
+# Runs every morning at 09:30 due to time zone difference of 2 hours
 on:
   workflow_dispatch:
   schedule:
