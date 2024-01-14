@@ -18,8 +18,10 @@ jobs:
         uses: szenius/set-timezone@v1.2
         with:
           timezoneLinux: "Europe/Copenhagen"
-          timezoneMacos: "Europe/Copenhagen"
-          timezoneWindows: "W. Europe Standard Time"
+
+      - name: Output Current Time
+        run: |
+          echo "Current time: $(date +'%Y-%m-%d %H:%M:%S')"     
                 
       - name: Checkout code
         uses: actions/checkout@v3
