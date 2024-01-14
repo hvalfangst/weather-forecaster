@@ -1,6 +1,6 @@
 name: Weather Forecast CRON
 
-# Runs every morning at 09:30 due to time zone difference of 2 hours
+# Runs every morning at 07:30
 on:
   workflow_dispatch:
   schedule:
@@ -14,6 +14,13 @@ jobs:
       USER_AGENT: ${{ secrets.USER_AGENT }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Set Timezone
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "Europe/Copenhagen"
+          timezoneMacos: "Europe/Copenhagen"
+          timezoneWindows: "W. Europe Standard Time"
+                
       - name: Checkout code
         uses: actions/checkout@v3
 
