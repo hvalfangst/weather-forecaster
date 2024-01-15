@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "30 07 * * *"
+      timezone: Europe/Copenhagen
 
 jobs:
   forecast_weather:
@@ -14,11 +15,6 @@ jobs:
       USER_AGENT: ${{ secrets.USER_AGENT }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Set Timezone
-        uses: szenius/set-timezone@v1.2
-        with:
-          timezoneLinux: "Europe/Copenhagen"
-
       - name: Output Current Time
         run: |
           echo "Current time: $(date +'%Y-%m-%d %H:%M:%S')"     
