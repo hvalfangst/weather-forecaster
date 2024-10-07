@@ -5,7 +5,27 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 
-def plot_weather_data(json_response):
+def plot_weather_data(file_path):
+    """
+  Reads weather data from a JSON file, extracts key attributes (air temperature, cloud coverage,
+  wind speed), and generates a 2x2 plot displaying the weather information over time. The plot
+  is saved as a PNG file in a specified directory.
+
+  Args:
+      file_path (str): Path to the JSON file containing weather forecast data.
+
+  Returns:
+      None: The function saves the plot as a PNG file in the "assets" directory and prints the file path.
+
+  JSON Structure:
+      The JSON file should follow the structure of a weather API response, with a `timeseries` array
+      inside `properties`. Each element in the timeseries contains a timestamp and weather details
+      such as air temperature, cloud area fraction, and wind speed.
+  """
+    # Read the JSON response from the given file path
+    with open(file_path, 'r') as file:
+        json_response = file.read()
+
     # Parse the JSON response
     data = json.loads(json_response)
 
@@ -69,47 +89,15 @@ def plot_weather_data(json_response):
     plt.axis('off')  # Turn off axes
     plt.text(0.1, 0.5, f"Weather forecast for Oslo:\n\n{updated_at}", fontsize=20)
 
+    # Define the output directory
+    output_directory = "assets"  # Make sure this matches your repository structure
+    if not os.path.exists(output_directory):
+        os.makedirs(output_directory)
+
+    # Save the plot as a PNG file with the same date as the JSON file
+    png_file_name = f"assets/forecast.png"  # Save in the assets folder
     plt.tight_layout()
-    plt.show()
+    plt.savefig(png_file_name)
+    plt.close()  # Close the figure to free memory
 
-
-def choose_file(files):
-    print("Available forecast files:")
-    for i, file in enumerate(files):
-        print(f"{i + 1}. {file}")
-
-    while True:
-        choice = input("Choose a file number: ")
-        try:
-            choice = int(choice)
-            if 1 <= choice <= len(files):
-                return files[choice - 1]
-            else:
-                print("Invalid choice. Please enter a valid file number.")
-        except ValueError:
-            print("Invalid choice. Please enter a valid file number.")
-
-
-def main():
-    # List forecast files in the "forecasts" folder
-    folder_path = "forecasts"
-    files = os.listdir(folder_path)
-
-    if len(files) == 0:
-        print("No forecast files found.")
-        return
-
-    # Prompt the user to choose a file
-    chosen_file = choose_file(files)
-    file_path = os.path.join(folder_path, chosen_file)
-
-    # Read the JSON response from the chosen file
-    with open(file_path, 'r') as file:
-        json_response = file.read()
-
-    # Plot the weather data
-    plot_weather_data(json_response)
-
-
-if __name__ == '__main__':
-    main()
+    print(f"Plot saved as '{png_file_name}'.")

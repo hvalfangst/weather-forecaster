@@ -1,6 +1,6 @@
 name: Weather Forecast CRON
 
-# Runs every morning at 08:30 (UTC+1 time)
+# Runs every morning at 09:30 CEST time (CET+1)
 on:
   workflow_dispatch:
   schedule:
@@ -17,7 +17,7 @@ jobs:
       - name: Output Current Time
         run: |
           echo "Current time: $(date +'%Y-%m-%d %H:%M:%S')"     
-                
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -31,16 +31,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Call API and maybe save JSON
-        run: python forecast_weather.py
+      - name: Call API and save JSON
+        run: python api.py
 
       - name: Configure Git
         run: |
           git config --global user.name "Weather Forecast Bot"
           git config --global user.email "<>"
 
-      - name: Commit and push changes to main branch
+      - name: Push Generated PNG Image
         run: |
-          git add .
-          git commit -m "Today's weather forecast"
+          git add assets/forecast.png
+          git commit -m "Overwrote image of today's weather forecast plot"
           git push origin main
