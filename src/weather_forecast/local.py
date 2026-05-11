@@ -1,22 +1,22 @@
 import os
 
-from plotter import plot_weather_data
+from weather_forecast.plotter import plot_weather_data
 
 
 def choose_file(files):
     """
-   Filters a list of files to include only JSON files and prompts the user
-   to choose one. If no JSON files are found, the function returns `None`.
+    Filters a list of files to include only JSON files and prompts the user
+    to choose one. If no JSON files are found, the function returns `None`.
 
-   Args:
-       files (list): A list of file names (strings) in the specified directory.
+    Args:
+        files (list): A list of file names (strings) in the specified directory.
 
-   Returns:
-       str or None: The file name of the chosen JSON file, or None if no files
-       are found or if the user makes no valid selection.
-   """
+    Returns:
+        str or None: The file name of the chosen JSON file, or None if no files
+        are found or if the user makes no valid selection.
+    """
     # Filter to include only JSON files
-    json_files = [file for file in files if file.endswith('.json')]
+    json_files = [file for file in files if file.endswith(".json")]
 
     if not json_files:
         print("No JSON forecast files found.")
@@ -40,14 +40,14 @@ def choose_file(files):
 
 def main():
     """
-   Main function that lists available forecast files in the "forecasts" directory
-   and prompts the user to choose one. Once a file is chosen, it plots the weather
-   data by calling the `plot_weather_data` function.
+    Main function that lists available forecast files in the "forecasts" directory
+    and prompts the user to choose one. Once a file is chosen, it plots the weather
+    data by calling the `plot_weather_data` function.
 
-   Returns:
-       None: The function terminates if no files are found or when the weather plot
-       has been generated and saved.
-   """
+    Returns:
+        None: The function terminates if no files are found or when the weather plot
+        has been generated and saved.
+    """
     # List forecast files in the "forecasts" folder
     folder_path = "forecasts"
     files = os.listdir(folder_path)
@@ -64,5 +64,5 @@ def main():
     plot_weather_data(file_path)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

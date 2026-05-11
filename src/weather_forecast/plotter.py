@@ -1,29 +1,31 @@
 import json
 import os
+from datetime import datetime
 
 import matplotlib.pyplot as plt
-from datetime import datetime
 
 
 def plot_weather_data(file_path):
     """
-  Reads weather data from a JSON file, extracts key attributes (air temperature, cloud coverage,
-  wind speed), and generates a 2x2 plot displaying the weather information over time. The plot
-  is saved as a PNG file in a specified directory.
+    Reads weather data from a JSON file, extracts key attributes (air temperature, cloud coverage,
+    wind speed), and generates a 2x2 plot displaying the weather information over time. The plot
+    is saved as a PNG file in a specified directory.
 
-  Args:
-      file_path (str): Path to the JSON file containing weather forecast data.
+    Args:
+        file_path (str): Path to the JSON file containing weather forecast data.
 
-  Returns:
-      None: The function saves the plot as a PNG file in the "assets" directory and prints the file path.
+    Returns:
+        None: The function saves the plot as a PNG file in the "assets"
+        directory and prints the file path.
 
-  JSON Structure:
-      The JSON file should follow the structure of a weather API response, with a `timeseries` array
-      inside `properties`. Each element in the timeseries contains a timestamp and weather details
-      such as air temperature, cloud area fraction, and wind speed.
-  """
+    JSON Structure:
+        The JSON file should follow the structure of a weather API response,
+        with a `timeseries` array inside `properties`. Each element in the
+        timeseries contains a timestamp and weather details such as air
+        temperature, cloud area fraction, and wind speed.
+    """
     # Read the JSON response from the given file path
-    with open(file_path, 'r') as file:
+    with open(file_path) as file:
         json_response = file.read()
 
     # Parse the JSON response
@@ -33,8 +35,7 @@ def plot_weather_data(file_path):
     timeseries = data["properties"]["timeseries"]
 
     # Extract datetime of last update
-    updated_at = datetime.strptime(
-        data["properties"]["meta"]["updated_at"], "%Y-%m-%dT%H:%M:%SZ")
+    updated_at = datetime.strptime(data["properties"]["meta"]["updated_at"], "%Y-%m-%dT%H:%M:%SZ")
 
     # Initialize lists to store the attributes
     timestamps = []
@@ -63,8 +64,10 @@ def plot_weather_data(file_path):
     plt.title("Air Temperature")
     plt.xlabel("Time")
     plt.ylabel("Temperature (°C)")
-    plt.xticks(rotation=45, ha='right')
-    plt.gca().xaxis.set_major_formatter(plt.FixedFormatter([t.strftime("%H:%M") for t in timestamps]))
+    plt.xticks(rotation=45, ha="right")
+    plt.gca().xaxis.set_major_formatter(
+        plt.FixedFormatter([t.strftime("%H:%M") for t in timestamps])
+    )
 
     # Upper right corner - Cloud coverages
     plt.subplot(2, 2, 2)
@@ -72,8 +75,10 @@ def plot_weather_data(file_path):
     plt.title("Cloud Coverage")
     plt.xlabel("Time")
     plt.ylabel("Cloud Coverage (%)")
-    plt.xticks(rotation=45, ha='right')
-    plt.gca().xaxis.set_major_formatter(plt.FixedFormatter([t.strftime("%H:%M") for t in timestamps]))
+    plt.xticks(rotation=45, ha="right")
+    plt.gca().xaxis.set_major_formatter(
+        plt.FixedFormatter([t.strftime("%H:%M") for t in timestamps])
+    )
 
     # Lower left corner - Wind speeds
     plt.subplot(2, 2, 3)
@@ -81,12 +86,14 @@ def plot_weather_data(file_path):
     plt.title("Wind Speed")
     plt.xlabel("Time")
     plt.ylabel("Wind Speed (m/s)")
-    plt.xticks(rotation=45, ha='right')
-    plt.gca().xaxis.set_major_formatter(plt.FixedFormatter([t.strftime("%H:%M") for t in timestamps]))
+    plt.xticks(rotation=45, ha="right")
+    plt.gca().xaxis.set_major_formatter(
+        plt.FixedFormatter([t.strftime("%H:%M") for t in timestamps])
+    )
 
     # Lower right corner - Location and date
     plt.subplot(2, 2, 4)
-    plt.axis('off')  # Turn off axes
+    plt.axis("off")  # Turn off axes
     plt.text(0.1, 0.5, f"Weather forecast for Oslo:\n\n{updated_at}", fontsize=20)
 
     # Define the output directory
@@ -95,7 +102,7 @@ def plot_weather_data(file_path):
         os.makedirs(output_directory)
 
     # Save the plot as a PNG file with the same date as the JSON file
-    png_file_name = f"assets/forecast.png"  # Save in the assets folder
+    png_file_name = "assets/forecast.png"  # Save in the assets folder
     plt.tight_layout()
     plt.savefig(png_file_name)
     plt.close()  # Close the figure to free memory

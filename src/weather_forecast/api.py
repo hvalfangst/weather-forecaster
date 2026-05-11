@@ -1,13 +1,9 @@
-import os
-
-import requests
 from datetime import datetime
 
-# Assign variables derived from GitHub Secrets
-from plotter import plot_weather_data
+import requests
 
-API_URL = os.environ.get("WEATHER_FORECAST_API_URL")
-USER_AGENT = os.environ.get("USER_AGENT")
+from weather_forecast.config import settings
+from weather_forecast.plotter import plot_weather_data
 
 
 def call_api_and_save_json(api_url):
@@ -21,7 +17,8 @@ def call_api_and_save_json(api_url):
         api_url (str): The URL of the API to fetch the data from.
 
     Returns:
-        str: The file path where the JSON response is saved, or the existing file path if the file already exists.
+        str: The file path where the JSON response is saved, or the existing
+        file path if the file already exists.
 
     Raises:
         SystemExit: If the API call fails (i.e., returns a status code other than 200),
@@ -36,16 +33,14 @@ def call_api_and_save_json(api_url):
 
     # Check if the file already exists
     try:
-        with open(file_name, "r"):
+        with open(file_name):
             print("File already exists.")
             return file_name
     except FileNotFoundError:
         pass
 
     # Make the API call with the User-Agent header
-    headers = {
-        "User-Agent": USER_AGENT
-    }
+    headers = {"User-Agent": settings.user_agent}
     response = requests.get(api_url, headers=headers)
 
     # Check if the API call was successful
@@ -63,12 +58,12 @@ def call_api_and_save_json(api_url):
 
 def main():
     # Call the API and save the JSON response as a file
-    json_file_path = call_api_and_save_json(API_URL)
+    json_file_path = call_api_and_save_json(str(settings.weather_forecast_api_url))
 
     # If a JSON file was saved, plot the weather data based on file path
     if json_file_path:
         plot_weather_data(json_file_path)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

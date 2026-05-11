@@ -7,7 +7,19 @@ on:
     - cron: "30 07 * * *"
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          python-version: "3.12"
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
   forecast_weather:
+    needs: lint
     runs-on: ubuntu-latest
     env:
       WEATHER_FORECAST_API_URL: ${{ secrets.WEATHER_FORECAST_API_URL }}
@@ -16,23 +28,21 @@ jobs:
     steps:
       - name: Output Current Time
         run: |
-          echo "Current time: $(date +'%Y-%m-%d %H:%M:%S')"     
+          echo "Current time: $(date +'%Y-%m-%d %H:%M:%S')"
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v3
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
         with:
-          python-version: '3.x'
+          python-version: "3.12"
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        run: uv sync --frozen
 
       - name: Call API and save JSON
-        run: python api.py
+        run: uv run fetch-forecast
 
       - name: Configure Git
         run: |
