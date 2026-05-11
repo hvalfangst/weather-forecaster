@@ -1,0 +1,51 @@
+{
+  "type": "Feature",
+  "properties": {
+    "meta": {
+      "updated_at": "2026-05-11T08:00:00Z",
+      "units": {
+        "air_temperature": "celsius",
+        "cloud_area_fraction": "%",
+        "wind_speed": "m/s"
+      }
+    },
+    "timeseries": [
+      {
+        "time": "2026-05-11T09:00:00Z",
+        "data": {
+          "instant": {
+            "details": {
+              "air_temperature": 12.4,
+              "cloud_area_fraction": 40.0,
+              "wind_speed": 2.1
+            }
+          }
+        }
+      },
+      {
+        "time": "2026-05-11T12:00:00Z",
+        "data": {
+          "instant": {
+            "details": {
+              "air_temperature": 15.7,
+              "cloud_area_fraction": 60.0,
+              "wind_speed": 3.4
+            }
+          }
+        }
+      },
+      {
+        "time": "2026-05-11T15:00:00Z",
+        "data": {
+          "instant": {
+            "details": {
+              "air_temperature": 14.2,
+              "cloud_area_fraction": 80.0,
+              "wind_speed": 2.8
+            }
+          }
+        }
+      }
+    ]
+  }
+}

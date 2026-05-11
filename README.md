@@ -60,7 +60,19 @@ Both must be run from the repo root (paths to `forecasts/` and `assets/` are rel
 
 PyCharm users: the `.run/` directory ships `Fetch Forecast` and `Plot Local` run configurations that pick up `.env` automatically.
 
-### 5. Pre-commit hooks
+### 5. Run tests
+
+```sh
+uv run pytest
+```
+
+CI runs the same command with coverage. To see coverage locally:
+
+```sh
+uv run pytest --cov=weather_forecast --cov-report=term
+```
+
+### 6. Pre-commit hooks
 
 Install the git hook once per clone so ruff runs on every commit:
 
